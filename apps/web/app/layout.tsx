@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
+
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -37,7 +38,7 @@ export default function RootLayout({
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <SignedOut>
+                            <Show when="signed-out">
                                 <SignInButton mode="modal">
                                     <button className="text-sm font-medium hover:text-purple-400 transition-colors">Sign In</button>
                                 </SignInButton>
@@ -46,8 +47,8 @@ export default function RootLayout({
                                         Sign Up
                                     </button>
                                 </SignUpButton>
-                            </SignedOut>
-                            <SignedIn>
+                            </Show>
+                            <Show when="signed-in">
                                 <UserButton
                                     appearance={{
                                         elements: {
@@ -55,7 +56,8 @@ export default function RootLayout({
                                         }
                                     }}
                                 />
-                            </SignedIn>
+                            </Show>
+
                         </div>
                     </header>
 
