@@ -1,0 +1,32 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "private": true,
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "test": "vitest"
+    },
+    "dependencies": {
+        "@clerk/clerk-sdk-node": "latest",
+        "@prisma/client": "latest",
+        "cors": "latest",
+        "dotenv": "latest",
+        "express": "latest",
+        "socket.io": "latest",
+        "stripe": "latest",
+        "svix": "latest"
+    },
+    "devDependencies": {
+        "@types/cors": "latest",
+        "@types/express": "latest",
+        "@types/node": "latest",
+        "prisma": "latest",
+        "ts-node-dev": "latest",
+        "typescript": "latest",
+        "vitest": "latest",
+        "socket.io-client": "latest"
+    }
+}

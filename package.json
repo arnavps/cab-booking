@@ -2,12 +2,13 @@
     "name": "uber-clone",
     "version": "1.0.0",
     "private": true,
+    "packageManager": "npm@10.0.0",
     "workspaces": [
         "apps/*",
         "packages/*"
     ],
     "scripts": {
-        "dev": "turbo run dev || (npm run dev --workspace=apps/web & npm run dev --workspace=apps/server)",
+        "dev": "turbo run dev || (npm run dev --workspace=web & npm run dev --workspace=server)",
         "build": "turbo run build",
         "lint": "turbo run lint"
     },
