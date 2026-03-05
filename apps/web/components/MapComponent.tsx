@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, memo } from 'react';
+
 import { GoogleMap, useJsApiLoader, DirectionsRenderer, MarkerF } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -59,7 +60,7 @@ interface MapProps {
     directions: google.maps.DirectionsResult | null;
 }
 
-export default function MapComponent({ pickup, dropoff, directions }: MapProps) {
+const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
@@ -104,4 +105,7 @@ export default function MapComponent({ pickup, dropoff, directions }: MapProps) 
             )}
         </GoogleMap>
     );
-}
+};
+
+export default memo(MapComponent);
+
