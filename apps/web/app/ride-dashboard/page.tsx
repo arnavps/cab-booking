@@ -60,7 +60,6 @@ export default function RideDashboard() {
                             const estimatedFare = 50 + (distanceKm * 15);
 
                             requestRide(route.start_address, route.end_address, estimatedFare);
-                            updateStatus('SEARCHING');
                         }
                     } else {
                         console.error("error fetching directions", result);
@@ -69,6 +68,11 @@ export default function RideDashboard() {
             );
         }
     }, [pickupCoords, dropoffCoords]);
+
+    const handleConfirmRide = () => {
+        updateStatus('SEARCHING');
+        // socket.emit('request_ride', ...) would go here in full implementation
+    };
 
     if (!isLoaded) {
         return <div className="h-screen w-full bg-black flex items-center justify-center">
@@ -97,6 +101,7 @@ export default function RideDashboard() {
                 status={status}
                 fare={fare}
                 driverDetails={null} // Will be populated by Socket.io in actual flow
+                onConfirm={handleConfirmRide}
                 onCancel={() => {
                     resetRide();
                     setPickupCoords(null);

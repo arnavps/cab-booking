@@ -9,10 +9,12 @@ interface RideSlidePanelProps {
     driverDetails: any | null;
     fare: number | null;
     onCancel: () => void;
+    onConfirm: () => void;
 }
 
-export default function RideSlidePanel({ status, driverDetails, fare, onCancel }: RideSlidePanelProps) {
+export default function RideSlidePanel({ status, driverDetails, fare, onCancel, onConfirm }: RideSlidePanelProps) {
     const isVisible = status !== 'IDLE';
+    const isSearching = status === 'SEARCHING';
 
     return (
         <AnimatePresence>
@@ -105,8 +107,15 @@ export default function RideSlidePanel({ status, driverDetails, fare, onCancel }
                                 >
                                     Cancel Ride
                                 </button>
-                                <button className="flex-1 py-4 px-6 bg-white text-black rounded-full font-bold text-sm shadow-xl shadow-white/5 hover:scale-105 transition-transform active:scale-95">
-                                    Confirm Details
+                                <button
+                                    onClick={onConfirm}
+                                    disabled={isSearching}
+                                    className={`flex-1 py-4 px-6 rounded-full font-bold text-sm shadow-xl transition-all active:scale-95 ${isSearching
+                                            ? 'bg-white/10 text-gray-500 cursor-not-allowed shadow-none'
+                                            : 'bg-white text-black shadow-white/5 hover:scale-105'
+                                        }`}
+                                >
+                                    {isSearching ? 'Searching...' : 'Confirm Details'}
                                 </button>
                             </div>
                         </div>
