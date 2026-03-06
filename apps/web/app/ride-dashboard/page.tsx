@@ -53,11 +53,11 @@ export default function RideDashboard() {
                     if (status === google.maps.DirectionsStatus.OK && result) {
                         setDirections(result);
 
-                        // Calculate Distance & Fare (e.g., $2.50 base + $1.50 per km)
+                        // Calculate Distance & Fare (e.g., ₹50 base + ₹15 per km)
                         const route = result.routes[0].legs[0];
                         if (route.distance?.value) {
                             const distanceKm = route.distance.value / 1000;
-                            const estimatedFare = 2.50 + (distanceKm * 1.50);
+                            const estimatedFare = 50 + (distanceKm * 15);
 
                             requestRide(route.start_address, route.end_address, estimatedFare);
                             updateStatus('SEARCHING');

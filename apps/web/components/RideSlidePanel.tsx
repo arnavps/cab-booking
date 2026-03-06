@@ -42,7 +42,7 @@ export default function RideSlidePanel({ status, driverDetails, fare, onCancel }
                                 </div>
                                 {fare && (
                                     <div className="text-right">
-                                        <span className="text-2xl font-bold text-white">${fare.toFixed(2)}</span>
+                                        <span className="text-2xl font-bold text-white">₹{fare.toFixed(2)}</span>
                                         <p className="text-xs text-gray-500">Estimated Fare</p>
                                     </div>
                                 )}
