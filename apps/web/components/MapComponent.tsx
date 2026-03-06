@@ -61,12 +61,6 @@ interface MapProps {
 }
 
 const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-        libraries: ['places'],
-    });
-
     const [map, setMap] = useState<google.maps.Map | null>(null);
 
     const onLoad = useCallback((map: google.maps.Map) => {
@@ -76,8 +70,6 @@ const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
     const onUnmount = useCallback(() => {
         setMap(null);
     }, []);
-
-    if (!isLoaded) return <div className="h-full w-full bg-black animate-pulse" />;
 
     return (
         <GoogleMap

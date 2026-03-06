@@ -5,8 +5,15 @@ import MapComponent from '@/components/MapComponent';
 import LocationSearch from '@/components/LocationSearch';
 import RideSlidePanel from '@/components/RideSlidePanel';
 import { useRideStore } from '@/store/useRideStore';
+import { useJsApiLoader } from '@react-google-maps/api';
 
 export default function RideDashboard() {
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+        libraries: ['places'],
+    });
+
     const [pickupCoords, setPickupCoords] = useState<google.maps.LatLngLiteral | null>(null);
     const [dropoffCoords, setDropoffCoords] = useState<google.maps.LatLngLiteral | null>(null);
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
@@ -62,6 +69,12 @@ export default function RideDashboard() {
             );
         }
     }, [pickupCoords, dropoffCoords]);
+
+    if (!isLoaded) {
+        return <div className="h-screen w-full bg-black flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
+        </div>;
+    }
 
     return (
         <main className="relative h-screen w-full overflow-hidden bg-black">
