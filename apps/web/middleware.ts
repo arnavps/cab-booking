@@ -7,12 +7,12 @@ const isProtectedRoute = createRouteMatcher([
     "/profile(.*)",
 ]);
 
-export default clerkMiddleware((auth, req) => {
-    const { userId, sessionClaims } = auth();
+export default clerkMiddleware(async (auth, req) => {
+    const { userId, sessionClaims } = await auth();
 
     // Redirect if not signed in and trying to access protected routes
-    if (isProtectedRoute(req) && !userId) {
-        return auth().redirectToSignIn();
+    if (isProtectedRoute(req)) {
+        await auth.protect();
     }
 
     // Role-based redirection logic
