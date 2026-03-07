@@ -72,37 +72,7 @@ const LandingPage = () => {
 
                 {/* Bottom Row Wrapper */}
                 <div className="flex w-full items-end justify-between">
-                    {/* Bottom-Left (Small Glass Card) - Quick Stats */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md"
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="relative flex h-3 w-3">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                                <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] uppercase tracking-widest text-white/40">Available Drivers</span>
-                                <span className="text-2xl font-black text-white">14</span>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Center-Right (MICRORITM Pill) */}
-                    <div className="absolute right-12 top-1/2 -translate-y-1/2">
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="group relative rounded-full border border-white/20 bg-black/60 px-8 py-3 text-[10px] font-bold tracking-[0.2em] text-white shadow-[0_0_20px_rgba(255,255,255,0.1)] backdrop-blur-md transition-all hover:bg-black/80 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-                        >
-                            MICRORITM
-                            <div className="absolute inset-0 -z-10 rounded-full bg-white/10 opacity-0 blur-xl transition-opacity group-hover:opacity-100" />
-                        </motion.button>
-                    </div>
-
-                    {/* Bottom-Right (The Main Booking Card) */}
+                    {/* Bottom-Left (The Main Booking Card) - Now Swapped to Left */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -144,6 +114,36 @@ const LandingPage = () => {
                                     Request Now
                                 </motion.button>
                             </Link>
+                        </div>
+                    </motion.div>
+
+                    {/* Center-Right (MICRORITM Pill) */}
+                    <div className="absolute right-12 top-1/2 -translate-y-1/2">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="group relative rounded-full border border-white/20 bg-black/60 px-8 py-3 text-[10px] font-bold tracking-[0.2em] text-white shadow-[0_0_20px_rgba(255,255,255,0.1)] backdrop-blur-md transition-all hover:bg-black/80 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                        >
+                            MICRORITM
+                            <div className="absolute inset-0 -z-10 rounded-full bg-white/10 opacity-0 blur-xl transition-opacity group-hover:opacity-100" />
+                        </motion.button>
+                    </div>
+
+                    {/* Bottom-Right (Small Glass Card) - Quick Stats - Now Swapped to Right */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className="relative flex h-3 w-3">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] uppercase tracking-widest text-white/40">Available Drivers</span>
+                                <span className="text-2xl font-black text-white">14</span>
+                            </div>
                         </div>
                     </motion.div>
                 </div>
