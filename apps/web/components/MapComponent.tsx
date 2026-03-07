@@ -60,30 +60,6 @@ interface MapProps {
     directions: google.maps.DirectionsResult | null;
 }
 
-const pickupIcon = {
-    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" fill="#8b5cf6" />
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="white" />
-            <circle cx="12" cy="7" r="4" stroke="white" />
-        </svg>
-    `),
-    scaledSize: new google.maps.Size(40, 40),
-    anchor: new google.maps.Point(20, 20),
-};
-
-const dropoffIcon = {
-    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" fill="#ef4444" />
-            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" stroke="white" />
-            <line x1="4" y1="22" x2="4" y2="15" stroke="white" />
-        </svg>
-    `),
-    scaledSize: new google.maps.Size(40, 40),
-    anchor: new google.maps.Point(20, 40),
-};
-
 const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
     const [map, setMap] = useState<google.maps.Map | null>(null);
 
@@ -94,6 +70,30 @@ const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
     const onUnmount = useCallback(() => {
         setMap(null);
     }, []);
+
+    const pickupIcon = {
+        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" fill="#8b5cf6" />
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="white" />
+                <circle cx="12" cy="7" r="4" stroke="white" />
+            </svg>
+        `),
+        scaledSize: new google.maps.Size(40, 40),
+        anchor: new google.maps.Point(20, 20),
+    };
+
+    const dropoffIcon = {
+        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" fill="#ef4444" />
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" stroke="white" />
+                <line x1="4" y1="22" x2="4" y2="15" stroke="white" />
+            </svg>
+        `),
+        scaledSize: new google.maps.Size(40, 40),
+        anchor: new google.maps.Point(20, 40),
+    };
 
     return (
         <GoogleMap
