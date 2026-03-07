@@ -76,7 +76,7 @@ const LandingPage = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="w-full max-w-[480px] rounded-[40px] border border-white/10 bg-white/5 p-10 shadow-3xl backdrop-blur-xl md:p-12"
+                        className="mb-12 w-full max-w-[480px] rounded-[40px] border border-white/10 bg-white/5 p-10 shadow-3xl backdrop-blur-xl md:p-12"
                     >
                         <h2 className="mb-8 text-3xl font-black tracking-tighter text-white md:text-4xl">
                             Ready to go?<br />
