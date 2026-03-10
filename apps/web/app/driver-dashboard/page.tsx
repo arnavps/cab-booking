@@ -13,6 +13,8 @@ const containerStyle = {
     height: '100vh',
 };
 
+const libraries: ("places" | "drawing" | "geometry" | "visualization")[] = ["places"];
+
 const center = {
     lat: 19.0760,
     lng: 72.8777,
@@ -34,7 +36,7 @@ export default function DriverDashboard() {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-        libraries: ['places'],
+        libraries: libraries,
     });
 
     const { user } = useUser();

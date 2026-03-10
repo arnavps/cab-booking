@@ -1,8 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
@@ -19,19 +17,14 @@ enum Role {
 enum RideStatus {
   PENDING
   ACCEPTED
+  ARRIVING
   ONGOING
-  COMPLETED
+  FINISHED
   CANCELLED
 }
 
-enum TransactionStatus {
-  PENDING
-  COMPLETED
-  FAILED
-}
-
 model User {
-  id            String         @id @default(uuid())
+  id            String         @id
   clerkId       String         @unique
   email         String         @unique
   name          String?
@@ -46,43 +39,43 @@ model User {
 }
 
 model DriverDetails {
-  id            String   @id @default(uuid())
+  id            String   @id @default(cuid())
   userId        String   @unique
   user          User     @relation(fields: [userId], references: [id])
-  licenseNumber String   @unique
-  vehicleType   String
-  vehiclePlate  String   @unique
-  rating        Float    @default(5.0)
-  isAvailable   Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  isOnline      Boolean  @default(false)
+  vehicleModel  String
+  vehiclePlate  String
+  averageRating Float    @default(5.0)
+  totalRides    Int      @default(0)
 }
 
 model Ride {
-  id                String     @id @default(uuid())
-  passengerId       String
-  driverId          String?
-  status            RideStatus @default(PENDING)
-  pickupLocation    String
-  dropoffLocation   String
-  fare              Float
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
-
-  passenger         User       @relation("PassengerRides", fields: [passengerId], references: [id])
-  driver            User?      @relation("DriverRides", fields: [driverId], references: [id])
-  transaction       Transaction?
-  rating            Int?
-  ratingComment     String?
+  id              String      @id @default(cuid())
+  passengerId     String
+  passenger       User        @relation("PassengerRides", fields: [passengerId], references: [id])
+  driverId        String?
+  driver          User?       @relation("DriverRides", fields: [driverId], references: [id])
+  pickupLocation  String
+  dropoffLocation String
+  pickupCoords    Json?       // { lat: number, lng: number }
+  dropoffCoords   Json?       // { lat: number, lng: number }
+  status          RideStatus  @default(PENDING)
+  fare            Float
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  rating          Int?
+  ratingComment   String?
+  transaction     Transaction?
 }
 
 model Transaction {
-  id            String            @id @default(uuid())
-  rideId        String            @unique
-  amount        Float
-  status        TransactionStatus @default(PENDING)
-  paymentMethod String
-  createdAt     DateTime          @default(now())
-
-  ride          Ride              @relation(fields: [rideId], references: [id])
+  id              String   @id @default(cuid())
+  rideId          String   @unique
+  ride            Ride     @relation(fields: [rideId], references: [id])
+  amount          Float
+  status          String   // e.g., 'PENDING', 'PAID', 'FAILED'
+  razorpayOrderId String?  @unique
+  razorpayPaymentId String? @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

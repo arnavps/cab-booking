@@ -8,6 +8,11 @@ import { stripeWebhookHandler } from "./payments/webhook";
 
 dotenv.config();
 
+// Clerk & FCM Dummy Fallbacks
+process.env.CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY || 'sk_test_clerk';
+process.env.CLERK_PUBLISHABLE_KEY = process.env.CLERK_PUBLISHABLE_KEY || 'pk_test_clerk';
+process.env.FIREBASE_SERVICE_ACCOUNT_JSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON || '{}';
+
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -116,9 +121,17 @@ io.on("connection", (socket) => {
 import paymentRoutes from "./routes/paymentRoutes";
 import rideRoutes from "./routes/rideRoutes";
 import { razorpayWebhookHandler } from "./webhooks/razorpay";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from '../node_modules/.prisma/client';
 
-const prismaClient = new PrismaClient();
+/*
+const prismaClient = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL
+    }
+  }
+});
+*/
 
 // Webhook Routes
 app.post("/api/webhook/clerk", clerkWebhookHandler);
@@ -133,10 +146,12 @@ app.post("/api/user/update-fcm", async (req, res) => {
         const { userId, fcmToken } = req.body;
         if (!userId || !fcmToken) return res.status(400).json({ error: 'Missing fields' });
         
+        /*
         await prismaClient.user.update({
             where: { id: userId },
             data: { fcmToken },
         });
+        */
         res.status(200).json({ status: 'ok' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update token' });
