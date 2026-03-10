@@ -15,11 +15,33 @@ A high-fidelity, real-time Uber clone built with modern web technologies. Focuse
 
 ## 📁 Architecture
 
-This project uses a monorepo structure:
-- **`apps/web`**: Next.js frontend with glassmorphism UI and maps integration.
-- **`apps/server`**: Express backend for real-time logic and webhooks.
-- **`packages/database`**: Shared Prisma schema and database migrations.
-- **`packages/shared`**: Shared Zod schemas and TypeScript types.
+## 📁 Architecture
+
+This project is a high-performance monorepo utilizing **Turborepo** for build caching and orchestration.
+
+```
+cab-booking/
+├── apps/
+│   ├── web/                    # Next.js 14 Frontend Application
+│   │   ├── app/                # App Router logic, Pages, and Layouts
+│   │   ├── components/         # Reusable React UI Components (Maps, Modals)
+│   │   └── store/              # Zustand global state (Driver & Passenger)
+│   └── server/                 # Node.js Express Backend API
+│       ├── src/
+│       │   ├── routes/         # REST API endpoints (Payments, History)
+│       │   ├── services/       # Core business logic (Fares, Routing, Rides)
+│       │   └── webhooks/       # Razorpay, Clerk & Stripe Webhooks
+│       └── index.ts            # Entrypoint & Socket.io Event Definitions
+├── packages/
+│   ├── database/               # Shared Database Logic
+│   │   └── prisma/             # Prisma ORM Schema (Postgres)
+│   └── shared/                 # Shared Types & Validation (Future)
+└── docs/                       # Monorepo Documentation
+```
+
+- **`apps/web`**: The main user-facing application built with Next.js (App Router), Tailwind CSS, and Framer Motion for high-fidelity interactive interfaces.
+- **`apps/server`**: The real-time backend engine handling Socket.io live-tracking grids, driver matchmaking computations, and secure payment processing.
+- **`packages/database`**: The unified data schema bridging frontend and backend type guarantees via Prisma and Supabase.
 
 ## 🛠️ Key Features
 
