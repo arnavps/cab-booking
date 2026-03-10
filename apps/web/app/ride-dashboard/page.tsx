@@ -76,7 +76,7 @@ export default function RideDashboard() {
                             setBaseFare(calculatedBaseFare);
                         }
                     } else {
-                        console.error("error fetching directions. Status:", dirStatus, "Result:", result);
+                        console.error("error fetching directions. Status:", dirStatus, "Origin:", pickupCoords, "Destination:", dropoffCoords);
                     }
                 }
             );

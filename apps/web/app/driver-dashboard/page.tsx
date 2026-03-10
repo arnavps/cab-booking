@@ -55,15 +55,21 @@ export default function DriverDashboard() {
     useEffect(() => {
         if (currentRide && isLoaded) {
             const directionsService = new google.maps.DirectionsService();
+            const destination = currentRide.pickupLat && currentRide.pickupLng 
+                ? { lat: currentRide.pickupLat, lng: currentRide.pickupLng } 
+                : currentRide.pickupLocation;
+
             directionsService.route(
                 {
                     origin: location,
-                    destination: currentRide.pickupLocation, // For simplicity, assume string or use coords if available
+                    destination: destination,
                     travelMode: google.maps.TravelMode.DRIVING,
                 },
-                (result, status) => {
-                    if (status === google.maps.DirectionsStatus.OK && result) {
+                (result, dirStatus) => {
+                    if (dirStatus === google.maps.DirectionsStatus.OK && result) {
                         setDirections(result);
+                    } else {
+                        console.error("Driver directions error:", dirStatus);
                     }
                 }
             );
@@ -174,7 +180,7 @@ export default function DriverDashboard() {
                         <div className="space-y-6">
                             <div className="text-center">
                                 <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">
-                                    {currentRide.status === 'ONGOING' ? 'In Progress' : 'Active Ride'}
+                                    {currentRide.status === 'ONGOING' ? 'In Progress' : (currentRide.riderName || 'Test Passenger')}
                                 </h2>
                                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 mt-1 leading-loose">
                                     {currentRide.status === 'ONGOING' ? 'Navigate to Destination' : 'Navigate to Pickup point'}
@@ -204,7 +210,7 @@ export default function DriverDashboard() {
                                     onClick={arrived}
                                     className="w-full rounded-2xl bg-white py-5 text-sm font-black uppercase tracking-widest text-black shadow-xl"
                                 >
-                                    I've Arrived
+                                    Start Trip
                                 </motion.button>
                             ) : (
                                 <motion.button

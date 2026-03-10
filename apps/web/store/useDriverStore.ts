@@ -38,8 +38,16 @@ export const useDriverStore = create<DriverState>((set, get) => ({
             }
         });
 
+        // Event from server when driver accepts a ride
         socket.on('ride-accepted', (rideData) => {
             set({ currentRide: rideData });
+        });
+
+        // Event from server when rider assigns a ride to this driver
+        socket.on('ride-assigned', (rideData) => {
+            set({ currentRide: rideData });
+            // Optionally clear requests or handle UI state
+            set({ requests: [] }); 
         });
 
         socket.on('online-confirmed', ({ isOnline }) => {
