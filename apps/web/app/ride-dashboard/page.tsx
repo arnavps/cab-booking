@@ -52,6 +52,10 @@ export default function RideDashboard() {
     // Route Logic & Base Fare Calculation
     useEffect(() => {
         if (pickupCoords && dropoffCoords && isLoaded) {
+            console.log("Fetching driving directions for:", { 
+                origin: pickupCoords, 
+                destination: dropoffCoords 
+            });
             const directionsService = new google.maps.DirectionsService();
 
             directionsService.route(
