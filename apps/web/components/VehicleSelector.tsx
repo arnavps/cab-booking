@@ -81,7 +81,7 @@ const VehicleSelector = ({ baseFare, onConfirm }: VehicleSelectorProps) => {
                             </div>
                             <div className="text-right">
                                 <span className={`text-xl font-black tracking-tighter ${isSelected ? 'text-white' : 'text-white/60'}`}>
-                                    ${fare.toFixed(2)}
+                                    ₹{fare.toFixed(2)}
                                 </span>
                             </div>
                             

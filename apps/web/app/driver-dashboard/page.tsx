@@ -229,7 +229,7 @@ export default function DriverDashboard() {
                         <div className="mt-8 grid grid-cols-2 gap-4 border-t border-white/5 pt-8">
                             <div className="text-center">
                                 <span className="block text-[10px] font-black uppercase tracking-widest text-white/20">Earnings Today</span>
-                                <span className="text-lg font-black text-white">$124.50</span>
+                                <span className="text-lg font-black text-white">₹124.50</span>
                             </div>
                             <div className="text-center border-l border-white/5">
                                 <span className="block text-[10px] font-black uppercase tracking-widest text-white/20">Rides Completed</span>

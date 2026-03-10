@@ -64,7 +64,7 @@ const RideRequestModal = ({ request, onAccept, onDecline }: RideRequestModalProp
                             <span className="text-xs font-black uppercase tracking-widest text-white/40">Est. Earnings</span>
                         </div>
                         <span className="text-2xl font-black tracking-tighter text-white">
-                            ${request.fare.toFixed(2)}
+                            ₹{request.fare.toFixed(2)}
                         </span>
                     </div>
                 </div>
