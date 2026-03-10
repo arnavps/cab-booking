@@ -11,11 +11,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import VehicleSelector from '@/components/VehicleSelector';
 import RatingModal from '@/components/RatingModal';
 
+const libraries: ("places" | "drawing" | "geometry" | "visualization")[] = ["places"];
+
 export default function RideDashboard() {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-        libraries: ['places'],
+        libraries: libraries,
     });
 
     const [pickupCoords, setPickupCoords] = useState<google.maps.LatLngLiteral | null>(null);
@@ -49,7 +51,7 @@ export default function RideDashboard() {
 
     // Route Logic & Base Fare Calculation
     useEffect(() => {
-        if (pickupCoords && dropoffCoords) {
+        if (pickupCoords && dropoffCoords && isLoaded) {
             const directionsService = new google.maps.DirectionsService();
 
             directionsService.route(
@@ -58,8 +60,8 @@ export default function RideDashboard() {
                     destination: dropoffCoords,
                     travelMode: google.maps.TravelMode.DRIVING,
                 },
-                (result, status) => {
-                    if (status === google.maps.DirectionsStatus.OK && result) {
+                (result, dirStatus) => {
+                    if (dirStatus === google.maps.DirectionsStatus.OK && result) {
                         setDirections(result);
 
                         const route = result.routes[0].legs[0];
@@ -70,12 +72,12 @@ export default function RideDashboard() {
                             setBaseFare(calculatedBaseFare);
                         }
                     } else {
-                        console.error("error fetching directions", result);
+                        console.error("error fetching directions. Status:", dirStatus, "Result:", result);
                     }
                 }
             );
         }
-    }, [pickupCoords, dropoffCoords]);
+    }, [pickupCoords, dropoffCoords, isLoaded]);
 
     const handleVehicleConfirm = (vehicleId: string, finalFare: number) => {
         if (directions) {
