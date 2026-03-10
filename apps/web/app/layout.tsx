@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
 import { Providers } from '@/components/Providers'
 import { Geist, Geist_Mono } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const geistSans = Geist({
@@ -31,6 +31,7 @@ export default function RootLayout({
                         {children}
                     </main>
                 </Providers>
+                <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
             </body>
         </html>
     )

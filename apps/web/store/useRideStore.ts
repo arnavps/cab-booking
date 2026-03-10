@@ -8,6 +8,7 @@ export type RideStatus =
     | 'ARRIVING'
     | 'STARTED'
     | 'FINISHED'
+    | 'PAID'
     | 'CANCELLED';
 
 interface RideState {
@@ -18,6 +19,7 @@ interface RideState {
     driverDetails: any | null;
     fare: number | null;
     socket: any | null;
+    razorpayOrderId: string | null;
 
     // Actions
     initSocket: () => void;
@@ -25,6 +27,7 @@ interface RideState {
     setSearching: () => void;
     acceptRide: (rideId: string, driverDetails: any) => void;
     updateStatus: (status: RideStatus) => void;
+    processPayment: (amount: number) => Promise<void>;
     finishRide: () => void;
     resetRide: () => void;
 }
@@ -37,6 +40,7 @@ export const useRideStore = create<RideState>((set, get) => ({
     driverDetails: null,
     fare: null,
     socket: null,
+    razorpayOrderId: null,
 
     initSocket: () => {
         if (get().socket) return;
@@ -79,6 +83,48 @@ export const useRideStore = create<RideState>((set, get) => ({
 
     updateStatus: (status) => set({ status }),
 
+    processPayment: async (amount: number) => {
+        try {
+            const { rideId } = get();
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/payments/create-order`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount, rideId }),
+            });
+
+            const order = await response.json();
+            set({ razorpayOrderId: order.id });
+
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: 'Uber Clone',
+                description: `Payment for Ride #${rideId}`,
+                order_id: order.id,
+                handler: async (response: any) => {
+                    const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/payments/verify-payment`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(response),
+                    });
+
+                    const result = await verifyRes.json();
+                    if (result.status === 'success') {
+                        set({ status: 'PAID' });
+                        window.location.href = '/payment-success';
+                    }
+                },
+                theme: { color: '#000000' },
+            };
+
+            const rzp = new (window as any).Razorpay(options);
+            rzp.open();
+        } catch (error) {
+            console.error('Payment failed:', error);
+        }
+    },
+
     finishRide: () => set({ status: 'FINISHED' }),
 
     resetRide: () => set({
@@ -87,6 +133,7 @@ export const useRideStore = create<RideState>((set, get) => ({
         pickup: null,
         dropoff: null,
         driverDetails: null,
-        fare: null
+        fare: null,
+        razorpayOrderId: null
     }),
 }));

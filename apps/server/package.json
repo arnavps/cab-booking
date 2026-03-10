@@ -15,6 +15,7 @@
         "cors": "latest",
         "dotenv": "latest",
         "express": "latest",
+        "razorpay": "^2.9.6",
         "socket.io": "latest",
         "stripe": "latest",
         "svix": "latest"
@@ -24,9 +25,9 @@
         "@types/express": "latest",
         "@types/node": "latest",
         "prisma": "latest",
+        "socket.io-client": "latest",
         "ts-node-dev": "latest",
         "typescript": "latest",
-        "vitest": "latest",
-        "socket.io-client": "latest"
+        "vitest": "latest"
     }
 }

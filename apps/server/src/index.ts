@@ -93,9 +93,14 @@ io.on("connection", (socket) => {
     });
 });
 
+import paymentRoutes from "./routes/paymentRoutes";
+import { razorpayWebhookHandler } from "./webhooks/razorpay";
+
 // Webhook Routes
 app.post("/api/webhook/clerk", clerkWebhookHandler);
-app.post("/api/webhook/stripe", stripeWebhookHandler);
+app.post("/api/webhook/stripe", stripeWebhookHandler); // Keeping for legacy support
+app.post("/api/webhook/razorpay", razorpayWebhookHandler);
+app.use("/api/payments", paymentRoutes);
 
 app.use(express.json());
 

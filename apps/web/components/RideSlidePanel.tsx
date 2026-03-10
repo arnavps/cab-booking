@@ -115,7 +115,7 @@ export default function RideSlidePanel({ status, driverDetails, fare, onCancel, 
                                             : 'bg-white text-black shadow-white/5 hover:scale-105'
                                         }`}
                                 >
-                                    {isSearching ? 'Searching...' : 'Confirm Details'}
+                                    {isSearching ? 'Searching...' : status === 'ACCEPTED' ? 'Pay Now' : 'Confirm Details'}
                                 </button>
                             </div>
                         </div>

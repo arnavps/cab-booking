@@ -187,8 +187,12 @@ export default function RideDashboard() {
                 <RideSlidePanel
                     status={status}
                     fare={fare}
-                    driverDetails={null}
-                    onConfirm={() => {}}
+                    driverDetails={useRideStore.getState().driverDetails}
+                    onConfirm={() => {
+                        if (status === 'ACCEPTED' && fare) {
+                            useRideStore.getState().processPayment(fare);
+                        }
+                    }}
                     onCancel={() => {
                         resetRide();
                         setPickupCoords(null);
