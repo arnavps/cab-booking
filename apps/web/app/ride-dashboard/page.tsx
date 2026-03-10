@@ -22,7 +22,11 @@ export default function RideDashboard() {
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [baseFare, setBaseFare] = useState<number>(0);
 
-    const { status, fare, requestRide, updateStatus, resetRide } = useRideStore();
+    const { status, fare, requestRide, updateStatus, resetRide, initSocket } = useRideStore();
+
+    useEffect(() => {
+        initSocket();
+    }, [initSocket]);
 
     const handlePickupSelect = (place: google.maps.places.PlaceResult) => {
         if (place.geometry?.location) {
