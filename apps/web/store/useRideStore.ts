@@ -28,6 +28,7 @@ interface RideState {
     acceptRide: (rideId: string, driverDetails: any) => void;
     updateStatus: (status: RideStatus) => void;
     processPayment: (amount: number) => Promise<void>;
+    rateRide: (rideId: string, rating: number, comment: string) => Promise<void>;
     finishRide: () => void;
     resetRide: () => void;
 }
@@ -52,6 +53,14 @@ export const useRideStore = create<RideState>((set, get) => ({
                 status: 'ACCEPTED', 
                 driverDetails: data.passengerDetails || { name: 'Driver Found' } 
             });
+        });
+
+        socket.on('driver-arrived', () => {
+            set({ status: 'ARRIVING' });
+        });
+
+        socket.on('ride-completed', () => {
+            set({ status: 'FINISHED' });
         });
 
         set({ socket });
@@ -122,6 +131,19 @@ export const useRideStore = create<RideState>((set, get) => ({
             rzp.open();
         } catch (error) {
             console.error('Payment failed:', error);
+        }
+    },
+
+    rateRide: async (rideId, rating, comment) => {
+        try {
+            await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/rides/rate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rideId, rating, comment }),
+            });
+            // Optionally update local state or just refresh history
+        } catch (error) {
+            console.error('Failed to submit rating:', error);
         }
     },
 

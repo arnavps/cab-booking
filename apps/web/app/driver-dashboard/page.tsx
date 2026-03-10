@@ -38,7 +38,7 @@ export default function DriverDashboard() {
     });
 
     const { user } = useUser();
-    const { isOnline, requests, currentRide, initSocket, toggleOnline, acceptRide, declineRide, finishRide } = useDriverStore();
+    const { isOnline, requests, currentRide, initSocket, toggleOnline, acceptRide, declineRide, arrived, finishRide } = useDriverStore();
     const [location, setLocation] = useState<google.maps.LatLngLiteral>(center);
 
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
@@ -164,8 +164,12 @@ export default function DriverDashboard() {
                     ) : (
                         <div className="space-y-6">
                             <div className="text-center">
-                                <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">Active Ride</h2>
-                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 mt-1">Navigate to Pickup point</p>
+                                <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">
+                                    {currentRide.status === 'ONGOING' ? 'In Progress' : 'Active Ride'}
+                                </h2>
+                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 mt-1 leading-loose">
+                                    {currentRide.status === 'ONGOING' ? 'Navigate to Destination' : 'Navigate to Pickup point'}
+                                </p>
                             </div>
 
                             <div className="rounded-2xl bg-white/5 p-4 border border-white/5">
@@ -174,23 +178,35 @@ export default function DriverDashboard() {
                                         <MapPin size={16} />
                                     </div>
                                     <div className="text-left">
-                                        <span className="block text-[8px] font-black uppercase tracking-widest text-white/30">Destination</span>
-                                        <p className="text-xs font-bold text-white truncate w-48">{currentRide.pickupLocation}</p>
+                                        <span className="block text-[8px] font-black uppercase tracking-widest text-white/30">
+                                            {currentRide.status === 'ONGOING' ? 'Dropoff' : 'Pickup'}
+                                        </span>
+                                        <p className="text-xs font-bold text-white truncate w-48">
+                                            {currentRide.status === 'ONGOING' ? currentRide.dropoffLocation : currentRide.pickupLocation}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => {
-                                    finishRide();
-                                    alert('Ride Completed Successfully!');
-                                }}
-                                className="w-full rounded-2xl bg-white py-5 text-sm font-black uppercase tracking-widest text-black shadow-xl"
-                            >
-                                Complete Trip
-                            </motion.button>
+                            {currentRide.status !== 'ONGOING' ? (
+                                <motion.button
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={arrived}
+                                    className="w-full rounded-2xl bg-white py-5 text-sm font-black uppercase tracking-widest text-black shadow-xl"
+                                >
+                                    I've Arrived
+                                </motion.button>
+                            ) : (
+                                <motion.button
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={finishRide}
+                                    className="w-full rounded-2xl bg-emerald-500 py-5 text-sm font-black uppercase tracking-widest text-black shadow-xl"
+                                >
+                                    Complete Trip
+                                </motion.button>
+                            )}
                         </div>
                     )}
 

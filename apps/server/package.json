@@ -15,6 +15,7 @@
         "cors": "latest",
         "dotenv": "latest",
         "express": "latest",
+        "firebase-admin": "^13.7.0",
         "razorpay": "^2.9.6",
         "socket.io": "latest",
         "stripe": "latest",

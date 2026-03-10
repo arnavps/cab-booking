@@ -38,6 +38,7 @@ model User {
   role          Role           @default(PASSENGER)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  fcmToken      String?
   
   driverDetails DriverDetails?
   rides         Ride[]         @relation("PassengerRides")
@@ -71,6 +72,8 @@ model Ride {
   passenger         User       @relation("PassengerRides", fields: [passengerId], references: [id])
   driver            User?      @relation("DriverRides", fields: [driverId], references: [id])
   transaction       Transaction?
+  rating            Int?
+  ratingComment     String?
 }
 
 model Transaction {

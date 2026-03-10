@@ -39,7 +39,11 @@ export default function RideSlidePanel({ status, driverDetails, fare, onCancel, 
                                         {status.replace("_", " ")}
                                     </span>
                                     <h3 className="text-2xl font-bold text-white">
-                                        {status === 'SEARCHING' ? 'Finding your ride...' : 'Your ride is here'}
+                                        {status === 'SEARCHING' ? 'Finding your ride...' : 
+                                         status === 'ACCEPTED' ? 'Driver is on the way' :
+                                         status === 'ARRIVING' ? 'Driver has arrived!' :
+                                         status === 'ONGOING' ? 'Heading to destination' :
+                                         'Your ride status'}
                                     </h3>
                                 </div>
                                 {fare && (
@@ -115,7 +119,7 @@ export default function RideSlidePanel({ status, driverDetails, fare, onCancel, 
                                             : 'bg-white text-black shadow-white/5 hover:scale-105'
                                         }`}
                                 >
-                                    {isSearching ? 'Searching...' : status === 'ACCEPTED' ? 'Pay Now' : 'Confirm Details'}
+                                    {isSearching ? 'Searching...' : status === 'ACCEPTED' ? 'Pay Now' : status === 'ARRIVING' || status === 'ONGOING' ? 'Ride in Progress' : 'Confirm Details'}
                                 </button>
                             </div>
                         </div>

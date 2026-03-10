@@ -84,6 +84,24 @@ io.on("connection", (socket) => {
         // In a more complex logic, we would broadcast to the NEXT nearest driver here
     });
 
+    socket.on("driver-arrived", async ({ rideId }: { rideId: string }) => {
+        try {
+            await DriverService.arrived(rideId);
+            io.to(rideId).emit("driver-arrived");
+        } catch (error) {
+            socket.emit("error", { message: "Failed to mark arrival" });
+        }
+    });
+
+    socket.on("ride-completed", async ({ rideId }: { rideId: string }) => {
+        try {
+            await DriverService.completeRide(rideId);
+            io.to(rideId).emit("ride-completed");
+        } catch (error) {
+            socket.emit("error", { message: "Failed to complete ride" });
+        }
+    });
+
     socket.on("update-location", ({ rideId, coords }: { rideId: string; coords: { lat: number; lng: number } }) => {
         io.to(rideId).emit("location-updated", coords);
     });
@@ -94,13 +112,34 @@ io.on("connection", (socket) => {
 });
 
 import paymentRoutes from "./routes/paymentRoutes";
+import rideRoutes from "./routes/rideRoutes";
 import { razorpayWebhookHandler } from "./webhooks/razorpay";
+import { PrismaClient } from "@prisma/client";
+
+const prismaClient = new PrismaClient();
 
 // Webhook Routes
 app.post("/api/webhook/clerk", clerkWebhookHandler);
 app.post("/api/webhook/stripe", stripeWebhookHandler); // Keeping for legacy support
 app.post("/api/webhook/razorpay", razorpayWebhookHandler);
+
 app.use("/api/payments", paymentRoutes);
+app.use("/api/rides", rideRoutes);
+
+app.post("/api/user/update-fcm", async (req, res) => {
+    try {
+        const { userId, fcmToken } = req.body;
+        if (!userId || !fcmToken) return res.status(400).json({ error: 'Missing fields' });
+        
+        await prismaClient.user.update({
+            where: { id: userId },
+            data: { fcmToken },
+        });
+        res.status(200).json({ status: 'ok' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update token' });
+    }
+});
 
 app.use(express.json());
 

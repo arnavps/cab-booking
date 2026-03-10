@@ -12,6 +12,7 @@ interface DriverState {
     removeRequest: (rideId: string) => void;
     acceptRide: (rideId: string, driverId: string) => void;
     declineRide: (rideId: string, driverId: string) => void;
+    arrived: () => void;
     finishRide: () => void;
     initSocket: (userId: string) => void;
 }
@@ -61,7 +62,21 @@ export const useDriverStore = create<DriverState>((set, get) => ({
         requests: state.requests.filter(r => r.id !== rideId) 
     })),
 
-    finishRide: () => set({ currentRide: null }),
+    arrived: () => {
+        const { socket, currentRide } = get();
+        if (socket && currentRide) {
+            socket.emit('driver-arrived', { rideId: currentRide.id });
+            set({ currentRide: { ...currentRide, status: 'ONGOING' } });
+        }
+    },
+
+    finishRide: () => {
+        const { socket, currentRide } = get();
+        if (socket && currentRide) {
+            socket.emit('ride-completed', { rideId: currentRide.id });
+        }
+        set({ currentRide: null }); // Removed status: 'IDLE' as it's not in DriverState
+    },
 
     acceptRide: (rideId, driverId) => {
         const { socket } = get();

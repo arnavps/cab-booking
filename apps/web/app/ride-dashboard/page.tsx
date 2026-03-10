@@ -9,6 +9,7 @@ import { useJsApiLoader } from '@react-google-maps/api';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import VehicleSelector from '@/components/VehicleSelector';
+import RatingModal from '@/components/RatingModal';
 
 export default function RideDashboard() {
     const { isLoaded } = useJsApiLoader({
@@ -201,6 +202,19 @@ export default function RideDashboard() {
                     }}
                 />
             )}
+
+            {/* Rating Modal */}
+            <RatingModal 
+                isOpen={status === 'FINISHED'}
+                rideId={useRideStore.getState().rideId || ''}
+                onClose={() => resetRide()}
+                onSubmit={(rating, comment) => {
+                    if (useRideStore.getState().rideId) {
+                        useRideStore.getState().rateRide(useRideStore.getState().rideId!, rating, comment);
+                    }
+                    resetRide();
+                }}
+            />
 
             {/* Subtle Overlay Vignette */}
             <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/40 via-transparent to-black/40 z-10" />

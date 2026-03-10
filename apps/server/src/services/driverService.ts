@@ -40,6 +40,52 @@ export class DriverService {
     }
 
     /**
+     * Updates ride status to ONGOING when driver arrives/picks up.
+     */
+    static async arrived(rideId: string) {
+        try {
+            const ride = await prisma.ride.update({
+                where: { id: rideId },
+                data: { status: 'ONGOING' },
+                include: { passenger: true },
+            });
+
+            if (ride.passenger.fcmToken) {
+                const { FCMService } = require('./fcmService');
+                await FCMService.notifyDriverArrived(ride.passenger.fcmToken, rideId);
+            }
+
+            return ride;
+        } catch (error) {
+            console.error('Error in arrived:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Completes the ride and triggers receipt/notification.
+     */
+    static async completeRide(rideId: string) {
+        try {
+            const ride = await prisma.ride.update({
+                where: { id: rideId },
+                data: { status: 'COMPLETED' },
+                include: { passenger: true, transaction: true },
+            });
+
+            if (ride.passenger.fcmToken) {
+                const { FCMService } = require('./fcmService');
+                await FCMService.notifyRideCompleted(ride.passenger.fcmToken, rideId, ride.fare);
+            }
+
+            return ride;
+        } catch (error) {
+            console.error('Error completing ride:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Gets driver details by userId.
      */
     static async getDriverDetails(userId: string) {
