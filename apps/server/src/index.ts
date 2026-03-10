@@ -43,11 +43,13 @@ io.on("connection", (socket) => {
     });
 
     socket.on("toggle-online", async ({ userId, isOnline }: { userId: string; isOnline: boolean }) => {
+        console.log(`Received toggle-online for ${userId}: requested status ${isOnline}`);
         try {
             await DriverService.toggleAvailability(userId, isOnline);
-            console.log(`Driver ${userId} is now ${isOnline ? 'online' : 'offline'}`);
+            console.log(`Driver ${userId} successfully toggled to ${isOnline ? 'online' : 'offline'}`);
             socket.emit("online-confirmed", { isOnline });
         } catch (error) {
+            console.error(`Error toggling online status for ${userId}:`, error);
             socket.emit("error", { message: "Failed to toggle online status" });
         }
     });

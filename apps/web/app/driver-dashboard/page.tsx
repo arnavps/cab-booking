@@ -44,6 +44,13 @@ export default function DriverDashboard() {
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
 
     useEffect(() => {
+        if (user) {
+            console.log('Initializing Driver Socket for:', user.id);
+            initSocket(user.id);
+        }
+    }, [user, initSocket]);
+
+    useEffect(() => {
         if (currentRide && isLoaded) {
             const directionsService = new google.maps.DirectionsService();
             directionsService.route(

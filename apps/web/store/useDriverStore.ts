@@ -51,8 +51,12 @@ export const useDriverStore = create<DriverState>((set, get) => ({
 
     toggleOnline: (userId) => {
         const { socket, isOnline } = get();
+        console.log('Toggle Online Clicked. Current state:', isOnline, 'Socket:', !!socket);
         if (socket) {
+            console.log('Emitting toggle-online for:', userId, 'New status:', !isOnline);
             socket.emit('toggle-online', { userId, isOnline: !isOnline });
+        } else {
+            console.error('No socket available to emit toggle-online');
         }
     },
 
