@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
-
+import { Providers } from '@/components/Providers'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -25,14 +24,14 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <ClerkProvider>
-            <html lang="en" className="dark">
-                <body className={`${geistSans.variable} ${geistMono.variable} font-sans bg-black text-white antialiased`}>
+        <html lang="en" className="dark">
+            <body className={`${geistSans.variable} ${geistMono.variable} font-sans bg-black text-white antialiased`}>
+                <Providers>
                     <main className="min-h-screen">
                         {children}
                     </main>
-                </body>
-            </html>
-        </ClerkProvider>
+                </Providers>
+            </body>
+        </html>
     )
 }
