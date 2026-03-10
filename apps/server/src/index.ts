@@ -77,11 +77,21 @@ io.on("connection", (socket) => {
             const ride = await DriverService.acceptRide(rideId, driverId);
             console.log(`Driver ${driverId} accepted ride ${rideId}`);
             
-            // Notify the specific ride room (passenger and accepted driver)
+            // Driver must join the room to receive future updates (and this one!)
+            socket.join(rideId);
+            console.log(`Driver socket ${socket.id} joined room: ${rideId}`);
+            
+            // The frontend uses the entire `rideData` object to set `currentRide`.
+            // So we need to ensure we pass everything it needs.
             io.to(rideId).emit("ride-accepted", { 
+                id: rideId,
                 driverId,
-                rideStatus: 'ACCEPTED',
-                passengerDetails: ride.passenger 
+                status: 'ACCEPTED',
+                passengerDetails: ride.passenger,
+                pickupLocation: ride.pickupLocation,
+                dropoffLocation: ride.dropoffLocation,
+                pickupLat: ride.pickupLat,
+                pickupLng: ride.pickupLng
             });
             
             // Also notify others that this ride is no longer available

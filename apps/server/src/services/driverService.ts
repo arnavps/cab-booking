@@ -17,7 +17,15 @@ export class DriverService {
     }
 
     static async acceptRide(rideId: string, driverId: string): Promise<any> {
-        return { id: rideId, driverId, passenger: { name: 'Test Passenger' } };
+        return { 
+            id: rideId, 
+            driverId, 
+            passenger: { name: 'Test Passenger' },
+            pickupLocation: 'Mumbai Central',
+            dropoffLocation: 'Bandra',
+            pickupLat: 18.9690,
+            pickupLng: 72.8205
+        };
     }
 
     static async arrived(rideId: string) {
