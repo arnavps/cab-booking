@@ -73,26 +73,24 @@ const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
 
     const pickupIcon = {
         url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" fill="#8b5cf6" />
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" stroke="white" />
-                <circle cx="12" cy="7" r="4" stroke="white" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" fill="white" stroke="black" stroke-width="1"/>
+                <circle cx="12" cy="12" r="4" fill="black" />
             </svg>
         `),
-        scaledSize: new google.maps.Size(40, 40),
-        anchor: new google.maps.Point(20, 20),
+        scaledSize: new google.maps.Size(32, 32),
+        anchor: new google.maps.Point(16, 16),
     };
 
     const dropoffIcon = {
         url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" fill="#ef4444" />
-                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" stroke="white" />
-                <line x1="4" y1="22" x2="4" y2="15" stroke="white" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" fill="black" stroke="white" stroke-width="1.5"/>
+                <line x1="4" y1="22" x2="4" y2="15" stroke="white" stroke-width="2"/>
             </svg>
         `),
-        scaledSize: new google.maps.Size(40, 40),
-        anchor: new google.maps.Point(20, 40),
+        scaledSize: new google.maps.Size(32, 32),
+        anchor: new google.maps.Point(8, 32),
     };
 
     return (
@@ -111,9 +109,9 @@ const MapComponent = ({ pickup, dropoff, directions }: MapProps) => {
                     directions={directions}
                     options={{
                         polylineOptions: {
-                            strokeColor: "#8b5cf6",
-                            strokeWeight: 6,
-                            strokeOpacity: 0.9,
+                            strokeColor: "#000000",
+                            strokeWeight: 5,
+                            strokeOpacity: 0.8,
                         },
                         suppressMarkers: true,
                     }}

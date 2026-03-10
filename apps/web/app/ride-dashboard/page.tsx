@@ -6,6 +6,7 @@ import LocationSearch from '@/components/LocationSearch';
 import RideSlidePanel from '@/components/RideSlidePanel';
 import { useRideStore } from '@/store/useRideStore';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import VehicleSelector from '@/components/VehicleSelector';
 
@@ -111,26 +112,69 @@ export default function RideDashboard() {
 
             {/* Searching for Driver Overlay */}
             {status === 'SEARCHING' && (
-                <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-md">
-                    <div className="relative mb-8">
-                        {/* Circular Ripples */}
-                        <div className="absolute inset-0 animate-ping rounded-full bg-purple-500/20 opacity-75" style={{ animationDuration: '3s' }} />
-                        <div className="absolute inset-0 animate-ping rounded-full bg-purple-500/20 opacity-75" style={{ animationDuration: '3s', animationDelay: '1s' }} />
-                        <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-purple-600 shadow-[0_0_50px_rgba(168,85,247,0.4)]">
-                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center animate-pulse">
-                                <span className="text-black font-black text-3xl">U</span>
+                <div className="absolute inset-0 z-[100] flex flex-col items-center justify-center bg-black/80 backdrop-blur-2xl">
+                    <div className="relative mb-16">
+                        {/* Multiple Layered Ripples */}
+                        {[...Array(3)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ scale: 0.8, opacity: 0.5 }}
+                                animate={{ scale: 2.2, opacity: 0 }}
+                                transition={{
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    delay: i * 1,
+                                    ease: "easeOut"
+                                }}
+                                className="absolute inset-0 rounded-full bg-white/10"
+                            />
+                        ))}
+                        
+                        <motion.div 
+                            initial={{ scale: 0.9 }}
+                            animate={{ scale: 1.1 }}
+                            transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                repeatType: "reverse",
+                                ease: "easeInOut"
+                            }}
+                            className="relative flex h-40 w-40 items-center justify-center rounded-full bg-white shadow-[0_0_80px_rgba(255,255,255,0.15)] ring-1 ring-white/20"
+                        >
+                            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-black">
+                                <span className="text-white font-black text-4xl italic tracking-tighter">U</span>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
-                    <h2 className="text-3xl font-black tracking-tighter text-white mb-2 uppercase">Finding your ride</h2>
-                    <p className="text-white/40 text-sm font-medium tracking-[0.2em] uppercase">Connecting with nearby drivers...</p>
+
+                    <div className="text-center space-y-4 px-8 max-w-sm">
+                        <motion.h2 
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-4xl font-black tracking-tight text-white uppercase italic"
+                        >
+                            Searching
+                        </motion.h2>
+                        <motion.p 
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                            className="text-white/30 text-xs font-bold tracking-[0.3em] uppercase leading-loose"
+                        >
+                            Matching you with the best driver for your premium ride...
+                        </motion.p>
+                    </div>
                     
-                    <button 
+                    <motion.button 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1 }}
                         onClick={resetRide}
-                        className="mt-12 text-xs font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors"
+                        className="absolute bottom-16 text-[11px] font-black uppercase tracking-[0.2em] text-white/30 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-8 py-3 rounded-2xl border border-white/5"
                     >
                         Cancel Request
-                    </button>
+                    </motion.button>
                 </div>
             )}
 
