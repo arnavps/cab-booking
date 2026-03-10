@@ -53,6 +53,7 @@ This project uses a monorepo structure:
 
 ## 📜 Documentation
 
+- [Project Structure & Component Map](docs/project_structure.md)
 - [Deployment Guide](docs/deployment_guide.md)
 - [Architecture & Patterns](docs/architecture_overview.md)
 
