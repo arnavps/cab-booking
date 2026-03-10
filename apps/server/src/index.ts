@@ -1,3 +1,10 @@
+process.env.CLERK_SECRET_KEY = 'sk_test_fake';
+process.env.CLERK_PUBLISHABLE_KEY = 'pk_test_fake';
+process.env.STRIPE_SECRET_KEY = 'sk_test_fake';
+process.env.STRIPE_WEBHOOK_SECRET = 'whsec_fake';
+process.env.CLERK_WEBHOOK_SECRET = 'whsec_fake';
+process.env.DATABASE_URL = 'postgresql://fake@localhost:5432/fake';
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";

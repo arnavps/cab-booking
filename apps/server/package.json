@@ -10,7 +10,6 @@
         "test": "vitest"
     },
     "dependencies": {
-        "@clerk/clerk-sdk-node": "latest",
         "cors": "latest",
         "dotenv": "latest",
         "express": "latest",
