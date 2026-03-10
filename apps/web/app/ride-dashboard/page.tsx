@@ -7,6 +7,7 @@ import RideSlidePanel from '@/components/RideSlidePanel';
 import { useRideStore } from '@/store/useRideStore';
 import { useJsApiLoader } from '@react-google-maps/api';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 import VehicleSelector from '@/components/VehicleSelector';
 import RatingModal from '@/components/RatingModal';
@@ -24,6 +25,7 @@ export default function RideDashboard() {
     const [dropoffCoords, setDropoffCoords] = useState<google.maps.LatLngLiteral | null>(null);
     const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
     const [baseFare, setBaseFare] = useState<number>(0);
+    const router = useRouter();
 
     const { status, fare, requestRide, updateStatus, resetRide, initSocket } = useRideStore();
 
@@ -213,12 +215,16 @@ export default function RideDashboard() {
             <RatingModal 
                 isOpen={status === 'FINISHED'}
                 rideId={useRideStore.getState().rideId || ''}
-                onClose={() => resetRide()}
+                onClose={() => {
+                    resetRide();
+                    router.push('/');
+                }}
                 onSubmit={(rating, comment) => {
                     if (useRideStore.getState().rideId) {
                         useRideStore.getState().rateRide(useRideStore.getState().rideId!, rating, comment);
                     }
                     resetRide();
+                    router.push('/');
                 }}
             />
 
